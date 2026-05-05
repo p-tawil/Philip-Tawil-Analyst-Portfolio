@@ -1,0 +1,69 @@
+---
+title: "Data Analyst Resume"
+author: "Philip Tawil"
+format: pdf
+---
+Washington D.C., 20007 | +1 (301) 922-7768 | Philip.Tawil@gmail.com
+
+## PROFESSIONAL SUMMARY
+
+Graduate Student at the School of International Service at American University. Focusing on transatlantic relations in a time of flux through a quantitative lens. Working toward a deeper understanding of how countries and cultures interact by leveraging data analysis, statistical modeling, and visualization. Seeking to apply current knowledge of European Affairs and technical proficiency in R, the `tidyverse` suite, and reproducible reporting to drive data-informed decision-making in a Data Analyst position.
+
+## TECHNICAL & DATA ANALYSIS SKILLS
+
+-	Programming & Literate Programming: `R (RStudio)`, `Quarto`, `RMarkdown`, `LaTeX`
+-	Data Wrangling: Built data processing pipelines using the tidyverse ecosystem
+- Data Visualization: Designed and implemented data visualizations using `ggplot2`, translating complex statistical relationships into visual insights using scatterplots, proportional bar charts, and multi-layered graphics.
+- Data harvesting & AcquisitionL Ecexuted ethical data harvesting and web scraping tools using `rvest` and `purr`, extracting, transforming, and integrating unstructured web data into structured datasets for statistical analysis.
+
+## EDUCATION
+### Master of Arts: Global Governance, Politics, and Security | 01/2025 – Present
+American University — Washington, D.C.
+
+- GPA: 3.55
+- Relevant Coursework: Data Analysis, Foundations of Global Security, Global Politics, International Economics, AI/Security/Politics of Tech
+
+### Bachelor of Arts: Global Affairs | 01/2022 - 05/2024
+George Mason University — Fairfax, VA
+
+- GPA: 3.81
+- Study Abroad (07/2022): International Security Studies at University of Fribourg (Switzerland)
+- Relevant Coursework: International Relations Theory, Government and Politics of Russia, Global Conflict Analysis/Resolution, International Economic Policy.
+
+## PROFESSIONAL EXPERIENCE
+
+### America-Eurasia Center (AEC) | Washington, D.C.
+Research and Program Intern | 03/2026 – Present
+
+- Manage and optimize comprehensive donor and outreach databases for the International Security Program, systematically updating records to ensure high data integrity for targeting and engagement.
+- Synthesize geopolitical intelligence into structured status reports and research deliverables (e.g., European security architectures, Ukraine peace talks), leveraging literate programming tools like Quarto and RMarkdown for clear, reproducible reporting.
+- Coordinate targeted email campaigns and media outreach for flagship events like "Embassies of the World," segmenting contact lists to maximize attendance and engagement.
+- Attend speaking events relevant to AEC's audience and produce reports. Events attended include the UK Ambassador's talk at the Atlantic Council and the American Enterprise Institute's "Poland, Northeastern Europe, and the Future of the Transatlantic Partnership" Event. 
+
+### American University | Washington, D.C.
+Research and Teaching Assistant | 01/2025 – Present
+
+- Set up and managed structured LaTeX document environments to standardize class deliverables and streamline the grading of research proposals.
+
+- Assisted in the coordination and planning of a high-level diplomatic event with the Danish Ambassador.
+
+- Acted as a liaison between the Transatlantic Policy Center and student organizations, facilitating targeted Q&A sessions.
+
+### Groundwork London | London, UK
+Intern, Together South Project | 06/2023 – 08/2023
+
+- Conducted data analysis on applicant information to systematically determine program eligibility and track participant demographics.
+- Managed onsite administrative workflows, including registering new participants and verifying identity documentation against program criteria.
+- Prepared instructional materials and occasionally led sessions to ensure seamless program delivery for both online and in-person learning environments.
+
+### IBM | Boston, MA
+Apprentice, Learning Department | 01/2017 – 06/2018
+
+- Collaborated with a cross-functional team to develop, manage, and implement IBM’s internal and external e-learning platforms.
+- Generated and structured training inputs for Watson AI, optimizing the model’s natural language understanding capabilities.
+
+## Language Skills
+- Fluent in English and German
+- Working Proficiency in Spanish
+
+
