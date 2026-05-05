@@ -1,0 +1,29 @@
+---
+title: "README"
+format: pdf
+---
+# Problem Set 4: Domestic Trust and the Geographic Divide in Palestine
+
+## Overview
+
+This directory contains the revised research product for Problem Set 4, completed as part of a Master's level Data Analysis course. The objective of this assignment was to utilize real-world survey data to produce a polished, visually cohesive, and reproducible slide deck using Quarto.
+
+## Research Topic
+
+This analysis investigates the crisis of institutional trust in Palestine, focusing specifically on civilian faith in the Council of Ministers. Given the severe geographic and political fragmentation between the West Bank and the Gaza Strip, this project explores whether distinct administrative realities yield different levels of trust. Furthermore, it analyzes how perceived government performance and efficacy drive institutional trust across these divided territories.
+
+## Data Source
+
+The dataset used in this analysis is [Arab Barometer Wave VIII (2023-2024)](https://www.arabbarometer.org/surveys/arab-barometer-wave-viii/), a central resource for quantitative research on the Middle East and North Africa. The data was filtered to isolate Palestinian respondents and focus on specific variables relating to regional location, trust in government, and satisfaction with governance.
+
+*Note: To adhere to file size limits, the raw Wave VIII dataset was pre-filtered to isolate Palestinian respondents (`COUNTRY == 15`). This smaller dataset (`ArabBarometer_Palestine.csv`) is provided in this repository to reproduce the analysis and visualizations.*
+
+## Analytical Approach
+
+This project was developed using R and compiled into a Beamer presentation via Quarto. Key steps in the workflow include:
+
+- Data Wrangling: Utilizing base R to subset the data by country code and recode specific governorate identifiers to establish a binary "West Bank" vs. "Gaza Strip" regional variable.
+
+- Variable Transformation: Converting raw numeric survey responses (excluding "Don't Know" and "Refused" categories) into ordered factors to accurately reflect the ordinal trust and satisfaction scales.
+
+- Visualization: Constructing a series of layered ggplot2 graphics utilizing a defined color palette to ensure the dependent variable (Trust) remains visually consistent across all slides. The analysis starts with an aggregate baseline distribution,then a geographically segmented comparison follow, and ends with a proportional bar chart to demonstrate the correlation between government performance and institutional trust.

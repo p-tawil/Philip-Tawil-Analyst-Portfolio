@@ -1,0 +1,144 @@
+---
+title: "Domestic Trust and the Geographic Divide in Palestine"
+subtitle: "Analysis of Arab Barometer Wave VIII"
+author: "Philip Tawil"
+format: beamer
+editor: visual
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(tidyverse)
+
+# Load the lightweight analytical dataset
+palestine <- read.csv("ArabBarometer_Palestine.csv")
+
+# Create a Region variable based on Gaza vs. West Bank governorate codes
+gaza_codes <- c(150002, 150003, 150005, 150009, 150012)
+palestine$Region <- ifelse(palestine$Q1 %in% gaza_codes, "Gaza Strip", "West Bank")
+
+# Clean Data: Filter out "Don't know" (98) and "Refused" (99) for our main variables
+pal_clean <- subset(palestine, Q201A_1 %in% 1:4 & Q204A_3 %in% 1:4)
+
+# Create ordered factors for visualization
+pal_clean$Trust_Gov <- factor(pal_clean$Q201A_1, 
+                              levels = c(4, 3, 2, 1), 
+                              labels = c("No trust at all", "Not a lot", "Quite a lot", "A great deal"))
+
+pal_clean$Gov_Perf <- factor(pal_clean$Q204A_3, 
+                             levels = c(4, 3, 2, 1), 
+                             labels = c("Completely dissatisfied", "Dissatisfied", "Satisfied", "Completely satisfied"))
+
+# Define a strict, universal color palette
+trust_palette <- c("No trust at all" = "#B22222", 
+                   "Not a lot" = "#E49B0F", 
+                   "Quite a lot" = "#56B4E9", 
+                   "A great deal" = "#053061")
+```
+
+# Overview
+
+-   **Motivation**: The geographic and political fragmentation of Palestine (West Bank vs. Gaza Strip) presents a highly complex environment for analyzing institutional trust. To accurately understand civilian faith in governance, we must account for this severe geographic divide.
+-   **Central Findings**: - Aggregate trust in government institutions is critically low across the entirety of Palestine.
+    -   Despite distinct governance structures, the deficit of trust is a shared phenomenon across both the West Bank and Gaza.
+    -   Overall satisfaction with government performance acts as a strong driver of trust, independent of regional location.
+
+# Data
+
+-   **Source:** Arab Barometer Wave VIII (2023-2023)
+-   **Sample:** Palestinian Respondents
+-   **Variables:**
+    -   **Dependent Variable:** Trust in Government (Council of Ministers)
+    -   **Independent Variable 1:** Region (West Bank vs. Gaza Strip)
+    -   **Independent Variable 2:** Satisfaction with overall government performance
+
+# Baseline: A Crisis of Trust
+
+Before comparing territories, we must establish the aggregate baseline of trust in the Council of Ministers across all respondents. The data reveals a systemic crisis of institutional faith.
+
+```{r}
+#| label: viz-1
+#| fig-width: 6
+#| fig-height: 3.5
+
+ggplot(pal_clean, aes(x = Trust_Gov, fill = Trust_Gov)) +
+  geom_bar(show.legend = FALSE, color = "black", alpha = 0.9) +
+  scale_fill_manual(values = trust_palette) +
+  theme_minimal() +
+  labs(title = "Overall Trust in Government (Palestine)", 
+       subtitle = "Aggregate respondent data for the Council of Ministers",
+       x = "Reported Level of Trust", 
+       y = "Number of Respondents") +
+  theme(
+    plot.title = element_text(face = "bold"),
+    panel.grid.major.x = element_blank()
+  )
+```
+
+# The Geographic Divide: West Bank vs. Gaza
+
+By segmenting the data, we can observe if the differing administrative realities of the West Bank and Gaza Strip yield significantly different distributions of trust. While the raw sample sizes differ, the overwhelming trend of distrust is uniform.
+
+```{r}
+#| label: viz-2
+#| fig-width: 6
+#| fig-height: 3.2
+
+ggplot(pal_clean, aes(x = Region, fill = Trust_Gov)) +
+  geom_bar(position = "dodge", color = "black", alpha = 0.9) +
+  scale_fill_manual(values = trust_palette) +
+  theme_minimal() +
+  labs(title = "Trust in Government Segmented by Region", 
+       subtitle = "Comparing institutional faith across administrative boundaries",
+       x = "Territory", 
+       y = "Number of Respondents",
+       fill = "Trust Level") +
+  theme(
+    plot.title = element_text(face = "bold"),
+    legend.position = "top",
+    panel.grid.major.x = element_blank()
+  )
+```
+
+# How Performance Drives Trust Across Regions
+
+Does tangible government performance bridge the trust deficit? This proportional visualization tracks how varying levels of satisfaction correlate with trust, demonstrating that efficacy breeds trust regardless of geography.
+
+```{r}
+#| label: viz-3
+#| fig-width: 7
+#| fig-height: 4
+
+ggplot(pal_clean, aes(x = Gov_Perf, fill = Trust_Gov)) +
+  geom_bar(position = "fill", color = "black", alpha = 0.9) + 
+  facet_wrap(~Region) +
+  scale_fill_manual(values = trust_palette) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold"),
+    axis.title = element_text(size = 10, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 9),
+    legend.position = "top",
+    panel.grid.major.x = element_blank()
+  ) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(title = "Trust as a Product of Perceived Performance", 
+       subtitle = "Proportion of trust levels based on overall governance satisfaction",
+       x = "Satisfaction with Gov. Performance", 
+       y = "Proportion of Respondents", 
+       fill = "Trust Level")
+```
+
+# Conclusion
+
+-   **Summary of Findings:**
+    -   Baseline level of trust in government is very low.
+    -   While raw counts differ, the lack of trust trust is shared across both the West Bank and Gaza.
+    -   The proportion chart shows that *where* Palestinians are satisfied with government performance, trust increases. Unfortunately, this satisfaction is very rare.
+-   **Implications:** Fixing the lack of trust in Palestinian institutions would require tangible improvements in governance and performance in both regions, since the geographic divide does not exempt either region from accountability
+    -   Of course, the active conflict and near leveling of the Gaza Strip make is very hard to get accurate data for the region and impact the findings severely.
