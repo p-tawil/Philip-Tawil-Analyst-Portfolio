@@ -1,0 +1,96 @@
+---
+title: "The Heavy Cost of Horsepower: Efficiency vs. Power (1970-1982)"
+author: "Philip Tawil"
+format: pdf
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+## The Story
+
+The 1973 OPEC oil embargo hit the US auto industry like a truck. Overnight, oil prices doubled in the United States. Miles-long lines snaked their way through neighborhoods as people waited to get their precious gasoline. This drove everyday Americans to consider the fuel efficiency of their cars over raw horsepower. 
+
+Miles per gallon became the sticking point over horsepower. However, a key factor when it comes to fuel efficiency is not just the horsepower of a given engine; a car’s weight plays an even bigger role.
+
+Analyzing vehicle data spanning 1970 to 1982 from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/9/auto+mpg) reveals how the auto industry responded to the embargo. The chart below shows the correlation between horsepower on the x-axis and fuel efficiency in miles per gallon on the y-axis. Whether a car has 4, 6, or 8 cylinders is indicated by the color of the points, and the size of the points indicates the weight of the cars. Highlighted are some of the notable examples of cars surveyed, such as the Toyota Corolla, the Honda Civic, the Ford Pinto, the AMC Gremlin, and the Chevrolet Chevelle Malibu.
+
+```{r}
+#| label: setup-and-visualization
+#| fig-width: 8
+#| fig-height: 5
+
+# Load Packages
+library(tidyverse)
+library(ggrepel)
+
+# Accessing Data and Cleaning
+auto_df <- read.table(
+  "auto-mpg.data", 
+  col.names = c("mpg", "cylinders", "displacement", "horsepower", "weight", 
+                "acceleration", "model_year", "origin", "car_name"),
+  na.strings = "?"
+) |> 
+  as_tibble() |> 
+  drop_na(horsepower) |> 
+  filter(cylinders %in% c(4, 6, 8)) |> 
+  mutate(
+    cyl_cat = factor(cylinders, levels = c(4, 6, 8), 
+                     labels = c("4 Cylinders", "6 Cylinders", "8 Cylinders")),
+    weight_k = weight / 1000,
+    label_text = ifelse(
+      car_name %in% c("honda civic", "toyota corolla", "ford pinto", 
+                      "amc gremlin", "chevrolet chevelle malibu") & 
+        !duplicated(car_name), 
+      car_name, 
+      ""
+    )
+  )
+
+# Visualization
+# Recreate the Visualization
+auto_df |> 
+  ggplot(aes(x = horsepower, y = mpg)) +
+  geom_point(aes(size = weight_k, fill = cyl_cat), shape = 21,
+             color = "white", alpha = 0.6) +
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2), color = "grey30", 
+              se = FALSE, linetype = "dashed", linewidth = 1) +
+  geom_text_repel(aes(label = label_text),
+                  box.padding = 0.5, point.padding = 0.5, size = 3.5,
+                  color = "grey20",
+                  max.overlaps = Inf) +
+  scale_fill_manual(values = c("4 Cylinders" = "#2E8B57", 
+                               "6 Cylinders" = "#E49B0F", 
+                               "8 Cylinders" = "#B22222")) + 
+  scale_size_continuous(range = c(1.5, 6), guide = "none") +
+  labs(
+    title = "The Heavy Cost of Horsepower (1970-1982)",
+    subtitle = "Efficiency (MPG) vs. Power (HP), sized by Vehicle Weight",
+    x = "Horsepower (hp)",
+    y = "Fuel Efficiency (mpg)",
+    fill = "Engine Layout",
+    caption = "Source: UCI Machine Learning Repository (Auto MPG Data)"
+  ) +
+  theme_classic() +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    legend.position = "top"
+  )
+```
+
+Highlighting this, summary statistics run on this data reinforce the visual trends, specifically the correlation between horsepower and miles per gallon, weight and miles per gallon, as well as the average miles per gallon by cylinders.
+
+```{r}
+#| label: summary-statistics
+
+# HP and MPG Correlation 
+cor(auto_df$horsepower, auto_df$mpg)
+
+# WT and MPG Correlation
+cor(auto_df$weight, auto_df$mpg)
+
+# AVG MPG by Cylinder count
+tapply(auto_df$mpg, auto_df$cylinders, mean)
+```
+This shows that while the correlation between horsepower and miles per gallon is quite strong at -0.78, the correlation between weight and miles per gallon at -0.84 is even stronger. This also neatly maps onto the steep falloff between 4, 6, and 8 cylinders at roughly 29.3 mpg, 20.0 mpg, and 15.0 mpg respectively.

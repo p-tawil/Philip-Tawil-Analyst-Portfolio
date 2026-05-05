@@ -1,0 +1,29 @@
+---
+title: "README"
+format: pdf
+---
+# Problem Set 2: The Heavy Cost of Horsepower (1970-1982)
+
+## Overview
+
+This project is a revised version of a first attempt at to tackle real-world data. The intent was to find a suitable dataset, clean and transform it for analysis and deliver a polished visualization and statistical summary.
+
+## Research Topic
+
+This analysis investigates the physical constraints of automotive engineering against the backdrop of the 1973 OPEC oil embargo. As gasoline prices doubled and shortages swept the United States, consumer priorities forcefully shifted from raw engine power to fuel efficiency. This project explores the punishing trade-off between a vehicle's horsepower and its miles per gallon (MPG), demonstrating how a car's weight and engine layout (cylinder count) acted as the definitive variables in fuel economy during this highly volatile era for global energy security.
+
+## Data Source
+
+The dataset used in this analysis is the Auto MPG Data Set, accessed from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/9/auto+mpg). It contains technical specifications for various automobile models produced between 1970 and 1982, which makes it a good snapshot for examining the automotive industry's response to the decade's energy shocks.
+
+## Analytical Approach
+
+This project was developed using R and compiled via Quarto. Key steps in the workflow include:
+
+- Data Ingestion: Utilizing base R's read.table() to reliably parse the inconsistent whitespace formatting of the raw .data file.
+
+- Data Wrangling: Leveraging tidyverse (dplyr, tidyr) to drop missing values, scaling variables for better plotting dynamics (converting weight to thousands of pounds), and factorizing the cylinder categories to isolate standard 4-, 6-, and 8-cylinder engines.
+
+- Visualization: Constructing a layered ggplot2 graphic which maps horsepower to fuel efficiency. Bubble size represents vehicle weight and colors denote engine cylinders. The ggrepel package was utilized to neatly annotate several vehicle models.
+
+- Statistical Summary: Calculating correlation coefficients (cor()) and aggregations (tapply()) to validate the visual trends observed in the plot mathematically.
