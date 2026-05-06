@@ -1,0 +1,64 @@
+---
+title: "README"
+format: pdf
+---
+# Exemplary Code: Dynamic Outlier Detection Function
+
+This custom R function streamlines the process of data cleaning by identifying statistical outliers using the Interquartile Range (IQR) method. Rather than manually filtering variables one by one, this function integrates seamlessly into a dplyr pipeline. It calculates the 25th and 75th percentiles to establish upper and lower bounds, flags any observations falling outside those limits, and automatically drops its own temporary calculation variables to keep the target dataframe tidy.
+
+What makes this chunk exemplary is its use of advanced tidyverse evaluation principles. By utilizing rlang::enquo(), rlang::as_label(), and the bang-bang (!!) operator, the function dynamically names the new boolean output column based on the specific variable being analyzed (e.g., evaluating the hp variable automatically generates an hp_outlier column). This prevents hard-coded column names from being overwritten if the function is called sequentially on the same dataset, demonstrating an understanding of defensive programming and scalable tool creation.
+
+## The Code
+
+```{r}
+#| message: FALSE
+
+library(dplyr)
+library(rlang)
+
+flag_outliers <- function(data, target_var) {
+  # Extract the variable name to create a dynamic output column name
+  var_name <- as_label(enquo(target_var))
+  outlier_col <- paste0(var_name, "_outlier")
+  
+  data |>
+    mutate(
+      # Calculate statistical bounds
+      Q1 = quantile({{ target_var }}, 0.25, na.rm = TRUE),
+      Q3 = quantile({{ target_var }}, 0.75, na.rm = TRUE),
+      IQR = Q3 - Q1,
+      lower_bound = Q1 - 1.5 * IQR,
+      upper_bound = Q3 + 1.5 * IQR,
+      
+      # Evaluate and dynamically name the output column (e.g., hp_outlier)
+      !!outlier_col := {{ target_var }} < lower_bound | {{ target_var }} > 
+        upper_bound
+    ) |>
+    # Clean up temporary calculation columns
+    select(-Q1, -Q3, -IQR, -lower_bound, -upper_bound)
+}
+```
+
+## The Output
+
+By applying this function to the standard mtcars dataset and targeting the hp (horsepower) variable, the function accurately flags the Maserati Bora as the sole statistical outlier, generating the dynamically named hp_outlier column.
+
+```{r}
+# Apply the function to mtcars
+mtcars_checked <- flag_outliers(data = mtcars, target_var = hp)
+
+# Filter for the outlier to verify the result
+outlier_cars <- mtcars_checked |>
+  filter(hp_outlier == TRUE) |>
+  select(mpg, cyl, hp, hp_outlier)
+
+print(outlier_cars)
+```
+
+
+
+
+
+
+
+
